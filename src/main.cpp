@@ -19,19 +19,17 @@ struct DeathCounterState {
 // OK PLEASE IGNORE THAT P1 COUNTER IS M_PLAYER2
 // I KNOW THAT LOOKS WEIRD BUT SOMEHOW IT WORKS
 class $modify(PlayerObject) {
-    void playerDestroyed(bool p0) {
-        PlayerObject::playerDestroyed(p0);
-        
-        if (p0) {
-            if (auto* pl = PlayLayer::get()) {
-                if (this == pl->m_player2 && !DeathCounterState::p1DeathCounted) {
-                    DeathCounterState::p1Deaths++;
-                    DeathCounterState::p1DeathCounted = true;
-                }
-                else if (this == pl->m_player1 && !DeathCounterState::p2DeathCounted) {
-                    DeathCounterState::p2Deaths++;
-                    DeathCounterState::p2DeathCounted = true;
-                }
+    void playerDestroyed(bool noEffects) {
+        PlayerObject::playerDestroyed(noEffects);
+
+        if (auto* pl = PlayLayer::get()) {
+            if (this == pl->m_player2 && !DeathCounterState::p1DeathCounted) {
+                DeathCounterState::p1Deaths++;
+                DeathCounterState::p1DeathCounted = true;
+            }
+            else if (this == pl->m_player1 && !DeathCounterState::p2DeathCounted) {
+                DeathCounterState::p2Deaths++;
+                DeathCounterState::p2DeathCounted = true;
             }
         }
     }
